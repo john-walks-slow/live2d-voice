@@ -10,9 +10,19 @@ npx live2d-voice
 
 ## 环境要求
 
-- **Node.js ≥ 22**（[下载](https://nodejs.org/)）
+- **Node.js ≥ 22**（[下载](https://nodejs.org/)）——或直接用下面的便携版，无需安装 Node
 - 麦克风（语音输入）、扬声器（语音输出）
 - 网络：LLM 走 DeepSeek 官方 API
+
+## 便携版（免 Node.js、解压即用）
+
+从 [GitHub Releases](https://github.com/john-walks-slow/live2d-voice/releases) 下载对应平台压缩包（Windows / macOS / Linux），解压后：
+
+- Windows：双击 `start.bat`
+- macOS：双击 `start.command`（首次被拦时：系统设置 → 隐私与安全性 → 仍要打开）
+- Linux：`./start.sh`
+
+约 10–30 秒自动打开浏览器。所有数据都在解压目录的 `data/` 下，删除整个文件夹即完全卸载。
 
 ## 快速开始
 
@@ -65,6 +75,7 @@ npx live2d-voice --port 8080     # 指定端口
 npx live2d-voice --host 0.0.0.0  # 监听所有网卡（局域网访问，注意安全）
 npx live2d-voice --home PATH     # 指定数据目录（默认 ~/.live2d-voice）
 npx live2d-voice --reinstall     # 强制重装依赖（升级插件时用）
+npx live2d-voice --prepare       # 预装配：scaffold + 装依赖后退出（打包用）
 npx live2d-voice --version
 npx live2d-voice --help
 ```

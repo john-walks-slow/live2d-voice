@@ -189,6 +189,7 @@ function parseArgs(argv) {
 		else if (a === "--host") out.host = argv[++i];
 		else if (a === "--home") out.home = argv[++i];
 		else if (a === "--reinstall") out.reinstall = true;
+		else if (a === "--prepare") out.prepare = true;
 		else if (a === "--version" || a === "-v") out.version = true;
 		else if (a === "--help" || a === "-h") out.help = true;
 		else {
@@ -207,6 +208,7 @@ const HELP = `live2d-voice v${VERSION} — Live2D 语音伴侣，一条命令跑
   live2d-voice --host 0.0.0.0      监听所有网卡（局域网访问，注意安全）
   live2d-voice --home PATH         指定数据目录（默认 ~/.live2d-voice）
   live2d-voice --reinstall         强制重装依赖（升级插件时用）
+  live2d-voice --prepare           预装配：scaffold + 装依赖后退出（打包用）
 
 环境变量 Env:
   DSH_HOME                         同 --home
@@ -268,6 +270,10 @@ async function main() {
 	if (needInstall) {
 		console.log("安装依赖（首次约 1–2 分钟）installing profile deps…");
 		await run(process.execPath, [binScript("pnpm"), "install"], { cwd: profileDir });
+	}
+	if (args.prepare) {
+		console.log(`预装配完成 prepared: ${home}`);
+		return;
 	}
 
 	// 5. pick port & boot
