@@ -7,7 +7,7 @@ set -euo pipefail
 NODE_VER=22.23.3
 PLAT="${1:-}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-VER="$(node -p "require('$ROOT/package.json').version")"
+VER="$(cd "$ROOT" && node -p "require('./package.json').version")"
 
 if [ -z "$PLAT" ]; then
 	case "$(uname -s)/$(uname -m)" in
@@ -46,10 +46,9 @@ fi
 
 echo "==> [2/5] launcher app (preinstalled)"
 mkdir -p "$STAGE/app"
-# NOTE: tar excludes match basenames at any depth — never exclude names that
-# also appear inside node_modules (pnpm ships node_modules/pnpm/dist/).
-(cd "$ROOT" && tar -cf - --exclude=.git --exclude=.github .) |
-	(cd "$STAGE/app" && tar -xf -)
+# Explicit copy list — never walk the whole repo: staging (.build) and dist/
+# live under ROOT and a wildcard copy would recurse into the bundle itself.
+(cd "$ROOT" && cp -a bin.mjs package.json package-lock.json README.md LICENSE node_modules "$STAGE/app/")
 
 echo "==> [3/5] data home (scaffold + profile deps)"
 node "$STAGE/app/bin.mjs" --home "$STAGE/data" --prepare
@@ -94,8 +93,8 @@ EOF
 
 echo "==> [5/5] archive"
 if [ "$PLAT" = "win-x64" ]; then
-	(cd "$ROOT/.build" && powershell -NoProfile -Command "Compress-Archive -Path 'live2d-voice-$VER-$PLAT' -DestinationPath '$OUT_DIR/live2d-voice-$VER-$PLAT.zip' -Force" 2>/dev/null ||
-		tar -a -cf "$OUT_DIR/live2d-voice-$VER-$PLAT.zip" "live2d-voice-$VER-$PLAT")
+	(cd "$ROOT/.build" && powershell -NoProfile -Command "Compress-Archive -Path 'live2d-voice-$VER-$PLAT' -DestinationPath 'live2d-voice-$VER-$PLAT.zip' -Force" 2>/dev/null)
+	mv "$ROOT/.build/live2d-voice-$VER-$PLAT.zip" "$OUT_DIR/"
 	OUT="$OUT_DIR/live2d-voice-$VER-$PLAT.zip"
 else
 	tar -czf "$OUT_DIR/live2d-voice-$VER-$PLAT.tar.gz" -C "$ROOT/.build" "live2d-voice-$VER-$PLAT"
