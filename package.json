@@ -1,0 +1,44 @@
+{
+	"name": "live2d-voice",
+	"version": "0.1.0",
+	"description": "One command to a standalone Live2D voice companion on DeepSeek Harness / 一行命令跑起独立的 Live2D 语音陪伴（dsh-live2d-voice 启动器）",
+	"type": "module",
+	"bin": {
+		"live2d-voice": "bin.mjs"
+	},
+	"files": [
+		"bin.mjs",
+		"README.md",
+		"LICENSE"
+	],
+	"scripts": {
+		"test": "node --check bin.mjs"
+	},
+	"keywords": [
+		"live2d",
+		"voice",
+		"companion",
+		"dsh",
+		"deepseek-harness",
+		"launcher",
+		"tts",
+		"vtuber",
+		"语音",
+		"陪伴"
+	],
+	"license": "MIT",
+	"author": "johnnren",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/john-walks-slow/live2d-voice.git"
+	},
+	"homepage": "https://github.com/john-walks-slow/live2d-voice#readme",
+	"bugs": "https://github.com/john-walks-slow/live2d-voice/issues",
+	"dependencies": {
+		"@deepseek-ai/dsh": "0.1.5-rc.3",
+		"pnpm": "10.17.0"
+	},
+	"engines": {
+		"node": ">=22"
+	}
+}
